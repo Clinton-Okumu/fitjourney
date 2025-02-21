@@ -19,7 +19,7 @@ func main() {
 	// Define a root route that returns a basic message
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
-			"message": "Welcome to the Go server. Visit /register or /login.",
+			"message": "Welcome to the Go server.",
 		})
 	})
 

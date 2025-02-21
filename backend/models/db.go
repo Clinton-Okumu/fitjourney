@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/go-gormigrate/gormigrate/v2"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -46,4 +47,25 @@ func InitDB() {
 		log.Fatal("Failed to connect to the database:", err)
 	}
 	fmt.Println("Database connection established")
+
+	// Initialize migration
+	m := gormigrate.New(DB, gormigrate.DefaultOptions, []*gormigrate.Migration{
+		{
+			ID: "2025022101",
+			Migrate: func(tx *gorm.DB) error {
+				// Define your migrations here (example with User model)
+				return tx.AutoMigrate(&User{})
+			},
+			Rollback: func(tx *gorm.DB) error {
+				// Define rollback logic
+				return tx.Migrator().DropTable(&User{})
+			},
+		},
+	})
+
+	// Run migrations
+	if err := m.Migrate(); err != nil {
+		log.Fatal("Failed to migrate:", err)
+	}
+	fmt.Println("Migrations applied successfully")
 }
