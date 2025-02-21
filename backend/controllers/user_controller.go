@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"fitjourney-backend/models"
-	"fitjourney-backend/utils"
+	"backend/models"
+	"backend/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

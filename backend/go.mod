@@ -1,4 +1,4 @@
-module github.com/Clinton-Okumu/fitjourney
+module backend
 
 go 1.23.4
 
