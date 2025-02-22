@@ -69,3 +69,26 @@ func LoginUser(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"token": token})
 }
+
+func GetUserProfile(c *gin.Context) {
+	// Retrieve the userID from the context (set by the AuthMiddleware)
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "User ID not found in context"})
+		return
+	}
+
+	// Fetch the user from the database using the userID
+	var user models.User
+	if err := models.DB.First(&user, userID).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch user profile"})
+		return
+	}
+
+	// Return the user profile (excluding password)
+	c.JSON(http.StatusOK, gin.H{"user": gin.H{
+		"id":       user.ID,
+		"username": user.Username,
+		"email":    user.Email,
+	}})
+}

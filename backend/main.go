@@ -1,8 +1,8 @@
 package main
 
 import (
-	"backend/controllers"
 	"backend/models"
+	"backend/routes"
 	"log"
 	"net/http"
 
@@ -23,9 +23,8 @@ func main() {
 		})
 	})
 
-	// Define the routes for user registration and login
-	r.POST("/register", controllers.RegisterUser)
-	r.POST("/login", controllers.LoginUser)
+	// Register user-related routes
+	routes.SetupUserRoutes(r)
 
 	// Log the server URL
 	log.Println("Server is running at http://localhost:8080")
