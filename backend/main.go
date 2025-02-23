@@ -1,7 +1,7 @@
 package main
 
 import (
-	"backend/models"
+	"backend/config"
 	"backend/routes"
 	"log"
 	"net/http"
@@ -11,7 +11,9 @@ import (
 
 func main() {
 	// Initialize the database connection
-	models.InitDB()
+	if err := config.InitDB(); err != nil {
+		log.Fatal("Error initializing database: ", err)
+	}
 
 	// Set up the Gin router
 	r := gin.Default()
@@ -24,10 +26,13 @@ func main() {
 	})
 
 	// Register user-related routes
-	routes.SetupUserRoutes(r)
+	routes.UserRoutes(r)
+
+	// You can add other route groups like workout routes, etc., in the future
+	// routes.SetupWorkoutRoutes(r)
 
 	// Log the server URL
-	log.Println("Server is running at http://localhost:8080")
+	log.Printf("Server is running at http://localhost:8080")
 
 	// Run the server on port 8080
 	if err := r.Run(":8080"); err != nil {
