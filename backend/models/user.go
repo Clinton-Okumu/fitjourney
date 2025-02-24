@@ -1,14 +1,12 @@
 package models
 
-import (
-	"gorm.io/gorm"
-)
+import "gorm.io/gorm"
 
-// User model
 type User struct {
 	gorm.Model
-	Username string    `gorm:"uniqueIndex;size:100" json:"username"`
-	Password string    `json:"password"`
-	Email    string    `gorm:"uniqueIndex;size:100" json:"email"`
-	Workouts []Workout `gorm:"foreignKey:UserID" json:"workouts"`
+	Username string `gorm:"unique;size:100"  json:"username"`
+	Email    string `gorm:"unique;size:100"  json:"email"`
+	Password string `json:"-"`
+	RoleID   uint   `json:"role_id"`
+	Role     Role   `gorm:"foreignKey:RoleID" json:"role"`
 }
